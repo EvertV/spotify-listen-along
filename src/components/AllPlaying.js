@@ -33,7 +33,7 @@ class AllPlaying extends Component {
   }
 
   componentWillMount() {
-    fetch(api_url+'api/allplaying')
+    fetch(api_url+'api/allplaying', {mode: 'no-cors'})
       .then(res => {
         if (res.ok) {
           res.json()

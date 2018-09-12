@@ -26,7 +26,7 @@ class App extends Component {
 
   handleUpdateDb(nowPlaying) {
     this.setState({nowPlaying: nowPlaying});
-    fetch(api_url+'api/update/117280769', {
+    fetch(api_url+'api/update/117280769', {mode: 'no-cors'}, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

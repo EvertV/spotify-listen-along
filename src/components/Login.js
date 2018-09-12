@@ -11,7 +11,7 @@ class Login extends Component {
     };
   }
   componentWillMount() {
-    fetch(api_url+'login')
+    fetch(api_url+'login', {mode: 'no-cors'})
       .then(response => {
         if (response.ok) {
           response.text().then((text)=>{ this.setState({url:text}, () => console.log("Got the URL!", text)) });
