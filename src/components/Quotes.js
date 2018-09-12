@@ -13,7 +13,7 @@ class Quotes extends Component {
   }
 
   componentDidMount() {
-    fetch('/api/quotes', {mode: 'no-cors'})
+    fetch('/api/quotes')
       .then(res => {
         if (res.ok) {
           return res.json().then(quotes => this.setState({quotes}, () => console.log('Quotes fetched...', quotes)));

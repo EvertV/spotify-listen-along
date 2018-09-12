@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Table } from 'reactstrap';
-const api_url = 'https://spotify-listen-along-backend.herokuapp.com/';
+const api_url = 'https://spotify-listen-along-backend.herokuapp.com/'; //'http://localhost:8080/';
+//const api_url = 'http://localhost:8080/';
 
 class AllPlaying extends Component {
   constructor() {
@@ -33,7 +34,7 @@ class AllPlaying extends Component {
   }
 
   componentWillMount() {
-    fetch(api_url+'api/allplaying', {mode: 'no-cors'})
+    fetch(api_url+'api/allplaying')
       .then(res => {
         if (res.ok) {
           res.json()
