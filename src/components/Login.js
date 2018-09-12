@@ -8,19 +8,8 @@ class Login extends Component {
     super();
     this.state = {
       quotes: [],
-      url: ""
+      url: api_url+'login'
     };
-  }
-  componentWillMount() {
-    fetch(api_url+'login')
-      .then(response => {
-        if (response.ok) {
-          response.text().then((text)=>{ this.setState({url:text}, () => console.log("Got the URL!", text)) });
-          /* return this.setState({url:response.text().then((text)=>{ return text })}); */
-        } else {
-          console.log("Couldn't get login URL", response);
-        }
-      });
   }
 
   render() {
