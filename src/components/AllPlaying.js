@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Table } from 'reactstrap';
-const api_url = 'https://spotify-listen-along-backend.herokuapp.com/'; //'http://localhost:8080/';
+const api_url = 'https://spotify-listen-along-backend.herokuapp.com/';
 //const api_url = 'http://localhost:8080/';
 
 class AllPlaying extends Component {
@@ -34,13 +34,12 @@ class AllPlaying extends Component {
   }
 
   componentWillMount() {
+    console.log(api_url+'api/allplaying');
     fetch(api_url+'api/allplaying')
       .then(res => {
         if (res.ok) {
-          res.json()
-          .then(users=> {
-            this.setState({users});
-          }); //users => this.setState({users}, () => console.log('All playing users fetched...', users))
+          res.json().then(users => this.setState({users}, () => console.log('All playing users fetched...', users))
+          ); //users => this.setState({users}, () => console.log('All playing users fetched...', users))
 
         } else {
           console.log("something went wrong with", res);

@@ -8,6 +8,7 @@ import { Container, Row, Col } from 'reactstrap';
 import SpotifyWebApi from 'spotify-web-api-js';
 const spotifyApi = new SpotifyWebApi();
 const api_url = 'https://spotify-listen-along-backend.herokuapp.com/';
+//const api_url = 'http://localhost:8080/';
 
 class App extends Component {
   constructor() {
@@ -26,7 +27,8 @@ class App extends Component {
 
   handleUpdateDb(nowPlaying) {
     this.setState({nowPlaying: nowPlaying});
-    fetch(api_url+'api/update/117280769', {mode: 'no-cors'}, {
+    const post_url = api_url+'api/update/'+this.state.user.id;
+    fetch(post_url, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

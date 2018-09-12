@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
-const api_url = 'https://spotify-listen-along-backend.herokuapp.com/'; //'http://localhost:8080/';
+const api_url = 'https://spotify-listen-along-backend.herokuapp.com/';
 //const api_url = 'http://localhost:8080/';
 
 class Login extends Component {
