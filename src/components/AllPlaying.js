@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Table } from 'reactstrap';
+import AllPlayingUser from './AllPlayingUser';
 const api_url = 'https://spotify-listen-along-backend.herokuapp.com/';
 //const api_url = 'http://localhost:8080/';
 
@@ -7,54 +8,31 @@ class AllPlaying extends Component {
   constructor() {
     super();
     this.state = {
-      users: [],
-      url: "",
-      timestampUpdater: ""
+      users: []
     };
-  }
-  milliesToMinutesAndSeconds(millis) {
-    var minutes = Math.floor(millis / 60000);
-    var seconds = ((millis % 60000) / 1000).toFixed(0);
-    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+    this.interval = "";
   }
 
-  renderUsers() {
-    this.state.users.map(user => {
-        user.nowPlaying.timestamp = this.milliesToMinutesAndSeconds(new Date().getTime() - user.nowPlaying.time + user.nowPlaying.progress_ms);
-      });
-    return this.state.users.map(userNowPlaying =>
-      <tr key={userNowPlaying._id}>
-        <td><img src={userNowPlaying.user.image_url} alt={userNowPlaying.user.name} width="25"/>&nbsp;
-        {userNowPlaying.user.name}</td>
-        <td>{userNowPlaying.nowPlaying.name}</td>
-        <td>{userNowPlaying.nowPlaying.artists}</td>
-        <td>{userNowPlaying.nowPlaying.timestamp}</td>
-      </tr>
-    )
+  getUsers() {
+    fetch(api_url+'api/allplaying')
+      .then(response => response.json())
+      .then(data => this.setState({ users: data }));
   }
 
   componentWillMount() {
-    console.log(api_url+'api/allplaying');
-    fetch(api_url+'api/allplaying')
-      .then(res => {
-        if (res.ok) {
-          res.json().then(users => this.setState({users}, () => console.log('All playing users fetched...', users))
-          ); //users => this.setState({users}, () => console.log('All playing users fetched...', users))
-
-        } else {
-          console.log("something went wrong with", res);
-        }
-      });
-    //   setInterval(() => {
-    //     this.setState({
-    //       user.nowPlaying.timestamp:this.milliesToMinutesAndSeconds(new Date().getTime() - user.nowPlaying.time + user.nowPlaying.progress_ms)
-    //     });
-    //   console.log(user.nowPlaying.timestamp);
-    // }, 1000);
+    this.getUsers();
+    this.interval = setInterval(() => this.getUsers(), 10000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   render() {
-    let users = this.renderUsers();
+    let renderUsers = this.state.users.map(data =>{
+      return(
+        <AllPlayingUser key={data._id} userData={data.user} nowPlayingData={data.nowPlaying}/>
+      );
+    });
     return (
       <div>
         <h2>All Playing</h2>
@@ -68,7 +46,7 @@ class AllPlaying extends Component {
             </tr>
           </thead>
           <tbody>
-            {users}
+            {renderUsers}
           </tbody>
         </Table>
       </div>

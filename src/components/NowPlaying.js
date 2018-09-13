@@ -3,6 +3,8 @@ import { Progress, Button, Card,
   CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, CardFooter,
   Alert } from 'reactstrap';
+const progress_adjustment = 2000;
+
 
 class NowPlaying extends Component {
   constructor(){
@@ -41,7 +43,7 @@ class NowPlaying extends Component {
               name: response.item.name,
               albumArt: response.item.album.images[0].url,
               duration_ms: Number(response.item.duration_ms),
-              progress_ms: Number(response.progress_ms),
+              progress_ms: Number(response.progress_ms)-progress_adjustment,
               device: response.device.name,
               artists: response.item.artists,
               is_playing: response.is_playing,
@@ -69,15 +71,26 @@ class NowPlaying extends Component {
            progress_ms:progress
          });
        } else {
+        this.setState({
+          progress_ms:0
+        });
          this.getNowPlaying();
        }
      }, 100)});
   }
-  milliesToMinutesAndSeconds(millis) {
-    var minutes = Math.floor(millis / 60000);
-    var seconds = ((millis % 60000) / 1000).toFixed(0);
-    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+  milliesToMinutesAndSeconds(ms) {
+    // 1- Convert to seconds:
+    var seconds = ms / 1000;
+    // 2- Extract hours:
+    var hours = parseInt( seconds / 3600, 10 ); // 3,600 seconds in 1 hour
+    seconds = seconds % 3600; // seconds remaining after extracting hours
+    // 3- Extract minutes:
+    var minutes = parseInt( seconds / 60, 10 ); // 60 seconds in 1 minute
+    // 4- Keep only seconds not extracted to minutes:
+    seconds = (seconds % 60).toFixed(1);
+    return hours !== 0 ? hours + ":" : "" + minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
   }
+
   showArtists() {
     let artists = this.state.artists;
     let artistsInString = "";
@@ -114,7 +127,12 @@ class NowPlaying extends Component {
   componentWillMount() {
     this.getNowPlaying();
     this.setState({nowPlayingUpdater: setInterval(() => { this.getNowPlaying(); }, 2000)});
-    this.setState({databaseDataUpdater: setInterval(() => { this.updateDatabaseData(); }, 5000)});
+    this.setState({databaseDataUpdater: setInterval(() => { this.updateDatabaseData(); }, 10000)});
+  }
+  componentWillUnmount() {
+    clearInterval(this.state.nowPlayingUpdater);
+    clearInterval(this.state.databaseDataUpdater);
+    clearInterval(this.state.timestampUpdater);
   }
 
   render() {

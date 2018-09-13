@@ -35,7 +35,7 @@ class App extends Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        "_id": this.state.user.id,
+        _id: this.state.user.id,
         user: this.state.user,
         nowPlaying: nowPlaying
       })
@@ -43,7 +43,7 @@ class App extends Component {
   }
 
   componentWillMount() {
-
+    this.handleUpdateDb();
   }
 
   render() {
@@ -55,7 +55,7 @@ class App extends Component {
     return (
       <Container>
         <Row>
-          <Col sm={{ size: '6', offset: 3 }}>
+          <Col sm={{ size: '6' }}>
             <Account spotifyApi={spotifyApi} onLogIn={this.handleUserData.bind(this)} />
           </Col>
         </Row>
