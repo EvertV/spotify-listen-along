@@ -127,7 +127,7 @@ class NowPlaying extends Component {
   componentWillMount() {
     this.getNowPlaying();
     this.setState({nowPlayingUpdater: setInterval(() => { this.getNowPlaying(); }, 2000)});
-    this.setState({databaseDataUpdater: setInterval(() => { this.updateDatabaseData(); }, 10000)});
+    this.setState({databaseDataUpdater: setInterval(() => { this.updateDatabaseData(); }, 3000)});
   }
   componentWillUnmount() {
     clearInterval(this.state.nowPlayingUpdater);

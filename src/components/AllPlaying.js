@@ -21,7 +21,7 @@ class AllPlaying extends Component {
 
   componentWillMount() {
     this.getUsers();
-    this.interval = setInterval(() => this.getUsers(), 10000);
+    this.interval = setInterval(() => this.getUsers(), 2500);
   }
   componentWillUnmount() {
     clearInterval(this.interval);
